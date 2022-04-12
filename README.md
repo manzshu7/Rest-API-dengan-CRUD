@@ -1,2 +1,5 @@
 # Rest-API-dengan-CRUD
-build with laravel v8
+dibangun dengan laravel v8
+CRUD via Postman
+
+deploved by MAMAN SUHERMAN 20416255201025
