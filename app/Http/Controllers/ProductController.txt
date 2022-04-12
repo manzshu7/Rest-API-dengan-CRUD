@@ -1,0 +1,45 @@
+<?php
+
+namespace app\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator; //library untuk verifikasi inputan
+use App\Models\Product; // memanggil model product
+
+class ProductController extends Controller
+{
+    //
+    public function store (Request $request){
+
+        //melakukan validasi inputan
+        $validator = Validator::make($request ->all(),[
+            'product_name' => 'required|max:50',
+            'product_type' => 'required|in:snack,drink,makeup,drug',
+            'product_price' =>'required|numeric',
+            'expired_date' => 'required|date'
+        ]);
+
+        //kondisi inputan salah
+        if($validator -> fails()) {
+            return response()->json($validator)->message()->setStatusCode(402);
+        }
+
+        //inputan yang sudah benar
+        $validated = $validator ->validated();
+
+        //input ke tabel product
+        product::create([
+            'product_name' =>$validated['product_name'],
+            'product_type' =>$validated['product_type'],
+            'product_price'=>$validated['product_price'],
+            'expired_date' =>$validated['expired_date']
+        ]);
+
+        return response()->json('product berhasil disimpan')->setStatusCode(201);
+    }
+    public function show(){
+        $Products = Product::all();
+
+        return response()->json($Products)->setStatusCode(200);
+    }
+}
